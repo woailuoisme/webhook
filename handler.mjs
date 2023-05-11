@@ -9,6 +9,9 @@ const now=dayjs().format('YYYY-MM-DD HH:mm:ss');
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const {repos}  = require("./config.json");
+// const repo = process.env.REPO_NAME
+// const refBranch=process.env.REPO_BRACHER ? `refs/heads/${process.env.REPO_BRACHER}`: `refs/heads/master`
+// const scriptPath = `./scripts/dev-${process.env.SCRIPT_NAME}`
 export const githubHandler= ({secret})=>{
     const handler = createHandler({path: '/webhook', secret })
     handler.on('error', err => {
