@@ -3,7 +3,7 @@ config({
     path: '.env'
 })
 import http from "http";
-const PORT = process.env.PORT || 10010
+const PORT = process.env.PORT || 8100
 const repo = process.env.REPO_NAME
 const secret = process.env.SECRET||'123456'
 const refBranch=process.env.REPO_BRACHER ? `refs/heads/${process.env.REPO_BRACHER}`: `refs/heads/master`

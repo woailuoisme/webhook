@@ -6,22 +6,31 @@ import createHandler from "github-webhook-handler";
 // const createHandler = require('gitee-webhook-handler')
 const $$ = $({stdio: 'inherit'});
 const now=dayjs().format('YYYY-MM-DD HH:mm:ss');
-export const githubHandler= ({secret,refBranch,repo,scriptPath})=>{
-    const handler = createHandler({path: '/webhook', secret:secret })
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const {repos}  = require("./config.json");
+export const githubHandler= ({secret})=>{
+    const handler = createHandler({path: '/webhook', secret })
     handler.on('error', err => {
         console.error(colors.red(`Error: ${err.message}`))
     })
     handler.on('push', async (event) => {
-        await $$`sh chmod a+x ./scripts/*.sh`;
-        console.log(`Received a push event from ${event.payload.repository.name} to ${event.payload.ref}`.green)
-        if (event.payload.ref === refBranch && event.payload.repository.name === repo) {
-            console.log(`###################CI start ${now} ###################`.green)
-            if (!fs.existsSync(scriptPath)) {
-                console.log(`${scriptPath} file is not existed !!!`.yellow)
-                return
+      console.log(`Received a push event from ${event.payload.repository.name} to ${event.payload.ref}`.green)
+      await $$`sh chmod a+x ./scripts/*.sh`;
+      if (repos && repos.length>0){
+          for (const r of repos) {
+            if (event.payload.ref === r.branch && event.payload.repository.name === r.repository) {
+              if (!fs.existsSync(`./scripts/${r.script}`)) {
+                console.error(`./scripts/${r.script} file is not existed !!!`.yellow)
+                continue;
+              }
+              console.log(`###################CI start ${now} ###################`.green)
+              await $$`sh ./scripts/${r.script}`;
+              console.log(`###################CI ended ${now} ###################`.green)
             }
-            await $$`sh scriptPath`;
-        }
+          }
+      }
+
     })
     return handler
 }

@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node app.mjs",
-    "start": "pm2 start app.mjs"
+    "start": "pm2 start app.mjs --name=webhook --watch=./"
   },
   "keywords": [],
   "author": "",

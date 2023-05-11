@@ -1,0 +1,16 @@
+{
+  "repos": [
+    {
+      "org": "woailuoisme",
+      "branch": "main",
+      "repository": "laravel10-starter",
+      "script": "dev-server.sh"
+    },
+    {
+      "org": "woailuoisme",
+      "branch": "main",
+      "repository": "webhook",
+      "script": "dev-docker.sh"
+    }
+  ]
+}
